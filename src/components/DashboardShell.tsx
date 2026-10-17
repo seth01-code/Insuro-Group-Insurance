@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback, useState } from "react";
-import { Loader2, Menu, ShieldCheck } from "lucide-react";
+import insuro from "@/assets/insuro.png";
 import { useAuth } from "./AuthProvider";
 import DashboardGate from "./DashboardGate";
 import DashboardSidebar from "./DashboardSidebar";
-import ThemeToggle from "./ThemeToggle";
+import MenuButton from "./MenuButton";
+import { DashboardShellSkeleton } from "./skeletons/DashboardSkeleton";
 
 // Sidebar + mobile top bar shared by every /dashboard page.
 // Only renders for signed-in users.
@@ -20,13 +22,7 @@ export default function DashboardShell({
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
   // Session not read yet (first paint)
-  if (!ready) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-canvas">
-        <Loader2 size={26} className="animate-spin text-brand" />
-      </div>
-    );
-  }
+  if (!ready) return <DashboardShellSkeleton />;
 
   if (!user) return <DashboardGate />;
 
@@ -35,27 +31,19 @@ export default function DashboardShell({
       <DashboardSidebar mobileOpen={mobileOpen} onMobileClose={closeMobile} />
 
       <div className="min-w-0 flex-1">
-        {/* Mobile top bar */}
-        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-line bg-surface/90 px-5 py-3.5 backdrop-blur md:hidden">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-white">
-              <ShieldCheck size={18} strokeWidth={2.5} />
-            </span>
-            <span className="text-[13px] font-extrabold tracking-wide text-ink">
-              INSURO<span className="text-brand">.AFRICA</span>
-            </span>
+        {/* Mobile top bar (the theme switch lives inside the menu) */}
+        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-line bg-surface/90 px-5 py-2.5 backdrop-blur md:hidden">
+          <Link href="/">
+            <Image
+              src={insuro}
+              alt="Insuro Africa Logo"
+              width={100}
+              height={50}
+              priority
+              className="h-12 w-auto object-contain dark:brightness-0 dark:invert"
+            />
           </Link>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <button
-              type="button"
-              aria-label="Open menu"
-              onClick={() => setMobileOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink"
-            >
-              <Menu size={20} />
-            </button>
-          </div>
+          <MenuButton onClick={() => setMobileOpen(true)} />
         </header>
 
         {children}

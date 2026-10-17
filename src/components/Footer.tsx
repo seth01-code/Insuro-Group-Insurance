@@ -3,16 +3,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  ArrowRight,
-} from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import insuro from "@/assets/insuro.png";
-
 
 const columns = [
   {
@@ -104,6 +97,8 @@ const legal = [
   { label: "Cookie Policy", href: "#" },
 ];
 
+// The footer is dark in light mode and white in dark mode. Explicit colors are
+// used on purpose: the theme tokens (text-ink, bg-white...) flip with dark mode.
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -123,10 +118,10 @@ export default function Footer() {
   }
 
   return (
-    <footer className="mt-10 bg-[#0a0f1e] text-white">
+    <footer className="mt-10 bg-[#0a0f1e] text-white dark:bg-[#ffffff] dark:text-[#0a0f1e]">
       <div className="mx-auto max-w-6xl px-5 pt-16">
-        {/* Newsletter band */}
-        <div className="flex flex-col gap-6 rounded-3xl bg-brand px-7 py-8 md:flex-row md:items-center md:justify-between">
+        {/* Newsletter band (blue in both modes) */}
+        <div className="flex flex-col gap-6 rounded-3xl bg-brand px-7 py-8 text-white md:flex-row md:items-center md:justify-between">
           <div>
             <h3 className="text-xl font-extrabold leading-tight">
               Stay in the loop
@@ -137,7 +132,7 @@ export default function Footer() {
           </div>
           <form
             onSubmit={handleSubscribe}
-            className="flex w-full max-w-md items-center gap-2 rounded-full bg-white p-1.5 md:w-auto"
+            className="flex w-full max-w-md items-center gap-2 rounded-full bg-[#ffffff] p-1.5 md:w-auto"
           >
             <input
               type="email"
@@ -162,16 +157,17 @@ export default function Footer() {
           {/* Brand + contact */}
           <div>
             <Link href="/" className="flex items-center gap-2.5">
+              {/* White on the dark footer, natural colors on the white one */}
               <Image
-              src={insuro}
-              alt="Insuro Africa Logo"
-              width={160}
-              height={80}
-              className="h-20 w-auto object-contain brightness-0 invert"
-              priority
-            />
+                src={insuro}
+                alt="Insuro Africa Logo"
+                width={160}
+                height={80}
+                className="h-20 w-auto object-contain brightness-0 invert dark:brightness-100 dark:invert-0"
+                priority
+              />
             </Link>
-            <p className="mt-5 max-w-xs text-[13px] leading-relaxed text-white/60">
+            <p className="mt-5 max-w-xs text-[13px] leading-relaxed text-white/60 dark:text-[#0a0f1e]/60">
               Compare plans from Nigeria&apos;s top HMOs and insurance
               providers. Pre-negotiated rates, transparent pricing, zero hassle.
             </p>
@@ -180,9 +176,12 @@ export default function Footer() {
               {contacts.map(({ Icon, text }) => (
                 <li
                   key={text}
-                  className="flex items-start gap-3 text-[13px] text-white/70"
+                  className="flex items-start gap-3 text-[13px] text-white/70 dark:text-[#0a0f1e]/70"
                 >
-                  <Icon size={15} className="mt-0.5 shrink-0 text-sky-400" />
+                  <Icon
+                    size={15}
+                    className="mt-0.5 shrink-0 text-sky-400 dark:text-brand"
+                  />
                   <span>{text}</span>
                 </li>
               ))}
@@ -194,7 +193,7 @@ export default function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition hover:bg-brand hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition hover:bg-brand hover:text-white dark:bg-[#0a0f1e]/10 dark:text-[#0a0f1e]/75 dark:hover:bg-brand dark:hover:text-white"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -212,7 +211,7 @@ export default function Footer() {
           {/* Link columns */}
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/40">
+              <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/40 dark:text-[#0a0f1e]/45">
                 {col.title}
               </h4>
               <ul className="mt-5 space-y-3">
@@ -220,7 +219,7 @@ export default function Footer() {
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="text-[13px] text-white/70 transition hover:text-white"
+                      className="text-[13px] text-white/70 transition hover:text-white dark:text-[#0a0f1e]/70 dark:hover:text-[#0a0f1e]"
                     >
                       {l.label}
                     </Link>
@@ -232,7 +231,7 @@ export default function Footer() {
         </div>
 
         {/* Regulatory note */}
-        <p className="mt-12 border-t border-white/10 pt-6 text-[11px] leading-relaxed text-white/40">
+        <p className="mt-12 border-t border-white/10 pt-6 text-[11px] leading-relaxed text-white/40 dark:border-[#0a0f1e]/10 dark:text-[#0a0f1e]/50">
           Insuro Africa Group Ltd (RC 1234567) is an insurance marketplace. All
           plans are underwritten by NAICOM-licensed insurers and NHIA-accredited
           HMOs. Plan prices shown are per staff, per month, and may vary by
@@ -240,14 +239,14 @@ export default function Footer() {
         </p>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-3 py-6 text-[12px] text-white/40 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-3 py-6 text-[12px] text-white/40 dark:text-[#0a0f1e]/50 md:flex-row md:items-center md:justify-between">
           <span>© {year} Insuro Africa Group. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {legal.map((l) => (
               <Link
                 key={l.label}
                 href={l.href}
-                className="transition hover:text-white"
+                className="transition hover:text-white dark:hover:text-[#0a0f1e]"
               >
                 {l.label}
               </Link>

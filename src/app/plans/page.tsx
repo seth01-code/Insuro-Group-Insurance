@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import PlansView, { type ViewType } from "@/components/PlansView";
+import SiteSkeleton from "@/components/skeletons/SiteSkeleton";
 
 export const metadata = { title: "Insurance Plans | Insuro Africa" };
 
@@ -15,22 +16,13 @@ async function PlansContent({ searchParams }: { searchParams: SearchParams }) {
   return <PlansView key={initial} initialType={initial} />;
 }
 
-// Shown for a split second while the search params resolve
-function PlansFallback() {
-  return (
-    <div className="bg-[#f8faff]">
-      <div className="h-80 rounded-b-[3.5rem] bg-linear-to-br from-brand via-brand to-brand-dark" />
-    </div>
-  );
-}
-
 export default function PlansPage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
   return (
-    <Suspense fallback={<PlansFallback />}>
+    <Suspense fallback={<SiteSkeleton />}>
       <PlansContent searchParams={searchParams} />
     </Suspense>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -33,11 +34,10 @@ import clsx from "clsx";
 import type { ModalType } from "@/lib/modals";
 import { initialsFor } from "@/lib/auth";
 import { employees } from "@/lib/dashboard-data";
+import insuro from "@/assets/insuro.png";
 import { useAuth } from "./AuthProvider";
 import { useModal } from "./ModalProvider";
 import ThemeToggle from "./ThemeToggle";
-import Image from "next/image";
-import insuro from "@/assets/insuro.png";
 
 /* ───────── Nav config ───────── */
 
@@ -283,17 +283,35 @@ function Panel({
   return (
     <div
       className={clsx(
-        "flex h-full flex-col overflow-hidden bg-surface",
-        mobile
-          ? ""
-          : "rounded-4xl border border-line shadow-[0_20px_50px_-25px_rgba(15,58,140,0.35)]",
+        "relative flex h-full flex-col overflow-hidden bg-surface",
+        !mobile &&
+          "rounded-4xl border border-line shadow-[0_20px_50px_-25px_rgba(15,58,140,0.35)]",
       )}
     >
+      {/* Mobile decoration */}
+      {mobile && (
+        <>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-16 -top-16 h-44 w-44 rounded-full bg-brand-soft opacity-80 blur-2xl"
+          />
+          <div
+            aria-hidden
+            className="animate-ring pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full border border-brand/15"
+          />
+        </>
+      )}
+
       {/* Header */}
       <div
         className={clsx(
-          "flex shrink-0 items-center pb-4 pt-5",
-          collapsed ? "justify-center px-3" : "justify-between px-5",
+          "relative flex shrink-0 items-center",
+          mobile
+            ? "h-16 justify-between px-4"
+            : clsx(
+                "pb-4 pt-5",
+                collapsed ? "justify-center px-3" : "justify-between px-5",
+              ),
         )}
       >
         {collapsed ? (
@@ -308,13 +326,20 @@ function Panel({
           </button>
         ) : (
           <>
-            <Link href="/" className="flex items-center gap-2.5">
+            <Link
+              href="/"
+              onClick={onClose}
+              className="flex items-center gap-2.5"
+            >
               <Image
                 src={insuro}
                 alt="Insuro Africa Logo"
                 width={100}
                 height={50}
-                className="h-14 w-auto object-contain"
+                className={clsx(
+                  "w-auto object-contain dark:brightness-0 dark:invert",
+                  mobile ? "h-11" : "h-14",
+                )}
                 priority
               />
             </Link>
@@ -323,7 +348,7 @@ function Panel({
                 type="button"
                 onClick={onClose}
                 aria-label="Close menu"
-                className={iconBtn}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-soft text-brand transition hover:bg-brand hover:text-white"
               >
                 <X size={18} />
               </button>
@@ -342,30 +367,53 @@ function Panel({
         )}
       </div>
 
-      <div
-        className={clsx("border-t border-line", collapsed ? "mx-3" : "mx-5")}
-      />
+      {!mobile && (
+        <div
+          className={clsx("border-t border-line", collapsed ? "mx-3" : "mx-5")}
+        />
+      )}
 
       {/* Scrollable nav (scrollbar hidden in every browser) */}
       <div
         className={clsx(
-          "flex-1 overflow-y-auto py-4 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden",
-          collapsed ? "px-3" : "px-4",
+          "relative flex-1 overflow-y-auto [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden",
+          mobile ? "px-3 pb-3 pt-1" : clsx("py-4", collapsed ? "px-3" : "px-4"),
         )}
       >
-        {!collapsed && user && (
-          <div className="mb-4 flex items-center gap-3 rounded-2xl bg-canvas p-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-brand text-[13px] font-extrabold text-white">
-              {initialsFor(user.company)}
-            </span>
-            <div className="min-w-0">
-              <div className="truncate text-[14px] font-bold text-ink">
-                {user.company}
+        {!collapsed &&
+          user &&
+          (mobile ? (
+            <div className="relative mb-3 overflow-hidden rounded-2xl bg-linear-to-br from-brand via-brand to-brand-dark p-3 text-white">
+              <div className="animate-ring absolute -right-8 -top-10 h-28 w-28 rounded-full border border-white/20" />
+              <div className="relative flex items-center gap-2.5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/15 text-[11px] font-extrabold ring-1 ring-white/30">
+                  {initialsFor(user.company)}
+                </span>
+                <div className="min-w-0">
+                  <div className="truncate text-[13px] font-bold">
+                    {user.company}
+                  </div>
+                  <div className="truncate text-[11px] text-white/70">
+                    {user.name}
+                  </div>
+                </div>
               </div>
-              <div className="truncate text-[11px] text-muted">{user.name}</div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="mb-4 flex items-center gap-3 rounded-2xl bg-canvas p-3">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-brand text-[13px] font-extrabold text-white">
+                {initialsFor(user.company)}
+              </span>
+              <div className="min-w-0">
+                <div className="truncate text-[14px] font-bold text-ink">
+                  {user.company}
+                </div>
+                <div className="truncate text-[11px] text-muted">
+                  {user.name}
+                </div>
+              </div>
+            </div>
+          ))}
 
         <div className="space-y-1">
           {nav.map((entry) =>
@@ -389,7 +437,7 @@ function Panel({
           )}
         </div>
 
-        <div className="my-4 border-t border-line" />
+        <div className="my-3 border-t border-line" />
 
         <div className="space-y-1">
           {secondary.map((item) => (
@@ -403,14 +451,28 @@ function Panel({
         </div>
       </div>
 
-      {/* Footer: theme, back to site, log out */}
+      {/* Footer */}
       <div
         className={clsx(
-          "shrink-0 space-y-1 border-t border-line",
-          collapsed ? "p-3" : "p-4",
+          "relative shrink-0 border-t border-line",
+          mobile
+            ? "space-y-1 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            : clsx("space-y-1", collapsed ? "p-3" : "p-4"),
         )}
       >
-        {collapsed ? (
+        {mobile ? (
+          <>
+            <ThemeToggle variant="segment" className="mb-1.5" />
+            <Link href="/" onClick={onClose} className={footerBtn}>
+              <ArrowLeft size={17} className="shrink-0" />
+              Back to site
+            </Link>
+            <button type="button" onClick={handleLogout} className={footerBtn}>
+              <LogOut size={17} className="shrink-0" />
+              Log out
+            </button>
+          </>
+        ) : collapsed ? (
           <div className="flex flex-col items-center gap-2">
             <ThemeToggle />
             <Link
@@ -505,22 +567,36 @@ export default function DashboardSidebar({
         />
       </aside>
 
-      {/* Phones: full-width drawer sliding in from the left */}
+      {/* Phones: half-width panel from the left + dimmed backdrop */}
       <div
         aria-hidden={!mobileOpen}
         inert={!mobileOpen}
         className={clsx(
-          "fixed inset-0 z-90 bg-surface transition-[transform,visibility] duration-300 ease-out md:hidden",
-          mobileOpen ? "visible translate-x-0" : "invisible -translate-x-full",
+          "fixed inset-0 z-90 transition-[visibility] duration-300 md:hidden",
+          mobileOpen ? "visible" : "invisible",
         )}
       >
-        <Panel
-          collapsed={false}
-          mobile
-          openGroups={openGroups}
-          onToggleGroup={toggleGroup}
-          onClose={onMobileClose}
+        <div
+          onClick={onMobileClose}
+          className={clsx(
+            "absolute inset-0 bg-[#0a0f1e]/55 backdrop-blur-sm transition-opacity duration-300",
+            mobileOpen ? "opacity-100" : "opacity-0",
+          )}
         />
+        <aside
+          className={clsx(
+            "absolute inset-y-0 left-0 w-1/2 min-w-64 max-w-xs overflow-hidden rounded-r-3xl bg-surface shadow-[0_0_60px_-10px_rgba(10,15,30,0.5)] transition-transform duration-300 ease-out",
+            mobileOpen ? "translate-x-0" : "-translate-x-full",
+          )}
+        >
+          <Panel
+            collapsed={false}
+            mobile
+            openGroups={openGroups}
+            onToggleGroup={toggleGroup}
+            onClose={onMobileClose}
+          />
+        </aside>
       </div>
     </>
   );

@@ -14,9 +14,42 @@ export default function ThemeToggle({
   variant = "icon",
   className,
 }: {
-  variant?: "icon" | "switch";
+  variant?: "icon" | "switch" | "segment";
   className?: string;
 }) {
+  if (variant === "segment") {
+    const base =
+      "flex flex-1 items-center justify-center gap-1.5 rounded-full py-2 text-[12px] font-semibold transition";
+    return (
+      <div
+        role="group"
+        aria-label="Theme"
+        className={clsx("flex gap-1 rounded-full bg-brand-soft p-1", className)}
+      >
+        <button
+          type="button"
+          onClick={() => applyPref("light")}
+          className={clsx(
+            base,
+            "bg-surface text-brand shadow-sm dark:bg-transparent dark:text-muted dark:shadow-none dark:hover:text-ink",
+          )}
+        >
+          <Sun size={14} /> Light
+        </button>
+        <button
+          type="button"
+          onClick={() => applyPref("dark")}
+          className={clsx(
+            base,
+            "text-muted hover:text-ink dark:bg-surface dark:text-brand dark:shadow-sm",
+          )}
+        >
+          <Moon size={14} /> Dark
+        </button>
+      </div>
+    );
+  }
+
   if (variant === "switch") {
     return (
       <button
@@ -28,7 +61,7 @@ export default function ThemeToggle({
           className,
         )}
       >
-        <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center">
+        <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
           <Sun size={18} className="dark:hidden" />
           <Moon size={18} className="hidden dark:block" />
         </span>
@@ -40,7 +73,7 @@ export default function ThemeToggle({
           aria-hidden
           className="relative h-6 w-11 shrink-0 rounded-full bg-line transition-colors dark:bg-brand"
         >
-          <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform dark:translate-x-5" />
+          <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-[#fff] shadow transition-transform dark:translate-x-5" />
         </span>
       </button>
     );

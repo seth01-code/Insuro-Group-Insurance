@@ -92,13 +92,15 @@ export default function Hero() {
                 preserveAspectRatio="none"
                 className="absolute -bottom-2 left-0 h-3 w-full"
               >
+                {/* pathLength="1" lets the draw animation use 0 to 1 at any width */}
                 <path
                   d="M2 9 C 60 2, 120 2, 180 7 S 270 12, 298 4"
+                  pathLength="1"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="3.5"
                   strokeLinecap="round"
-                  className="text-sky-400"
+                  className="draw-line text-sky-400"
                 />
               </svg>
             </span>{" "}

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import CheckoutView from "@/components/CheckoutView";
+import SiteSkeleton from "@/components/skeletons/SiteSkeleton";
 import { getPlanById } from "@/lib/plans";
 
 export const metadata = { title: "Checkout | Insuro Africa" };
@@ -30,21 +31,13 @@ async function CheckoutContent({
   );
 }
 
-function CheckoutFallback() {
-  return (
-    <div className="bg-[#f8faff]">
-      <div className="h-72 rounded-b-[3.5rem] bg-linear-to-br from-brand via-brand to-brand-dark" />
-    </div>
-  );
-}
-
 export default function CheckoutPage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
   return (
-    <Suspense fallback={<CheckoutFallback />}>
+    <Suspense fallback={<SiteSkeleton />}>
       <CheckoutContent searchParams={searchParams} />
     </Suspense>
   );
