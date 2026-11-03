@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { loginUser, registerUser } from "@/lib/auth";
+import Image from "next/image";
+import insuro from "@/assets/insuro.png";
 
 export type AuthMode = "signup" | "login";
 
@@ -273,12 +275,14 @@ export default function AuthModal({
           <div className="relative overflow-hidden bg-linear-to-br from-brand via-brand to-brand-dark px-7 pb-8 pt-7 text-white md:hidden">
             <div className="animate-ring absolute -bottom-20 -right-16 h-56 w-56 rounded-full border border-white/20" />
             <div className="relative flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-brand">
-                <ShieldCheck size={18} strokeWidth={2.5} />
-              </span>
-              <span className="text-[13px] font-extrabold tracking-wide">
-                INSURO.AFRICA
-              </span>
+              <Image
+                src={insuro}
+                alt="Insuro Africa Logo"
+                width={160}
+                height={80}
+                className="h-20 w-auto object-contain brightness-0 invert dark:brightness-100 dark:invert-0"
+                priority
+              />
             </div>
             <p className="relative mt-6 pr-10 text-2xl font-extrabold leading-tight tracking-tight">
               {c.title}
@@ -534,12 +538,14 @@ export default function AuthModal({
             }}
           >
             <div className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-brand">
-                <ShieldCheck size={18} strokeWidth={2.5} />
-              </span>
-              <span className="text-[13px] font-extrabold tracking-wide">
-                INSURO.AFRICA
-              </span>
+              <Image
+                src={insuro}
+                alt="Insuro Africa Logo"
+                width={160}
+                height={80}
+                className="h-20 w-auto object-contain brightness-0 invert dark:brightness-100 dark:invert-0"
+                priority
+              />
             </div>
 
             <div>

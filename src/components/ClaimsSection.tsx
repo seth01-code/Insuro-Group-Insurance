@@ -1,6 +1,20 @@
 "use client";
 
-import { ArrowRight, Car, MessageCircle, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Bandage,
+  Briefcase,
+  Car,
+  HeartPulse,
+  Home,
+  MessageCircle,
+  Plane,
+  ShieldAlert,
+  ShieldCheck,
+  Ship,
+  Smartphone,
+  Sprout,
+} from "lucide-react";
 import type { ModalType } from "@/lib/modals";
 import { useModal } from "./ModalProvider";
 
@@ -39,6 +53,114 @@ const claims: {
       "hover:border-emerald-200 hover:shadow-[0_25px_50px_-20px_rgba(5,150,105,0.35)]",
     btn: "group-hover:bg-emerald-600",
   },
+  {
+    title: "Health Insurance Claim",
+    desc: "Reimbursement or authorisation issues for treatment under a corporate, group, individual, or family health plan.",
+    cta: "Start a Health Claim",
+    modal: "claim-health",
+    Icon: HeartPulse,
+    tile: "from-sky-400 to-sky-600",
+    glow: "bg-sky-50",
+    hover:
+      "hover:border-sky-200 hover:shadow-[0_25px_50px_-20px_rgba(2,132,199,0.35)]",
+    btn: "group-hover:bg-sky-600",
+  },
+  {
+    title: "Device Insurance Claim",
+    desc: "Theft, accidental damage, or breakdown of a covered phone, laptop, TV, POS machine, camera, or projector.",
+    cta: "Start a Device Claim",
+    modal: "claim-electronics",
+    Icon: Smartphone,
+    tile: "from-cyan-400 to-cyan-600",
+    glow: "bg-cyan-50",
+    hover:
+      "hover:border-cyan-200 hover:shadow-[0_25px_50px_-20px_rgba(8,145,178,0.35)]",
+    btn: "group-hover:bg-cyan-600",
+  },
+  {
+    title: "Travel Insurance Claim",
+    desc: "Medical emergencies, trip cancellation, delays, or lost baggage on an international, Schengen, business, or family trip.",
+    cta: "Start a Travel Claim",
+    modal: "claim-travel",
+    Icon: Plane,
+    tile: "from-blue-400 to-blue-600",
+    glow: "bg-blue-50",
+    hover:
+      "hover:border-blue-200 hover:shadow-[0_25px_50px_-20px_rgba(37,99,235,0.35)]",
+    btn: "group-hover:bg-blue-600",
+  },
+  {
+    title: "Home & Property Claim",
+    desc: "Fire, flooding, theft, or damage to a home, household contents, or commercial property.",
+    cta: "Start a Property Claim",
+    modal: "claim-property",
+    Icon: Home,
+    tile: "from-violet-400 to-violet-600",
+    glow: "bg-violet-50",
+    hover:
+      "hover:border-violet-200 hover:shadow-[0_25px_50px_-20px_rgba(124,58,237,0.35)]",
+    btn: "group-hover:bg-violet-600",
+  },
+  {
+    title: "Business & SME Claim",
+    desc: "Liability, professional indemnity, or equipment losses under a business package or SME policy.",
+    cta: "Start a Business Claim",
+    modal: "claim-business",
+    Icon: Briefcase,
+    tile: "from-indigo-400 to-indigo-600",
+    glow: "bg-indigo-50",
+    hover:
+      "hover:border-indigo-200 hover:shadow-[0_25px_50px_-20px_rgba(79,70,229,0.35)]",
+    btn: "group-hover:bg-indigo-600",
+  },
+  {
+    title: "Marine & Transit Claim",
+    desc: "Loss or damage to cargo on marine, inland, or import/export shipments.",
+    cta: "Start a Marine Claim",
+    modal: "claim-marine",
+    Icon: Ship,
+    tile: "from-teal-400 to-teal-600",
+    glow: "bg-teal-50",
+    hover:
+      "hover:border-teal-200 hover:shadow-[0_25px_50px_-20px_rgba(13,148,136,0.35)]",
+    btn: "group-hover:bg-teal-600",
+  },
+  {
+    title: "Personal Accident Claim",
+    desc: "Injury, disability, or death benefit claims under an individual, family, or group accident policy.",
+    cta: "Start an Accident Claim",
+    modal: "claim-accident",
+    Icon: Bandage,
+    tile: "from-orange-400 to-orange-600",
+    glow: "bg-orange-50",
+    hover:
+      "hover:border-orange-200 hover:shadow-[0_25px_50px_-20px_rgba(234,88,12,0.35)]",
+    btn: "group-hover:bg-orange-600",
+  },
+  {
+    title: "Agricultural Claim",
+    desc: "Crop failure, livestock loss, or damage to covered agricultural equipment.",
+    cta: "Start an Agric Claim",
+    modal: "claim-agriculture",
+    Icon: Sprout,
+    tile: "from-lime-400 to-lime-600",
+    glow: "bg-lime-50",
+    hover:
+      "hover:border-lime-200 hover:shadow-[0_25px_50px_-20px_rgba(101,163,13,0.35)]",
+    btn: "group-hover:bg-lime-600",
+  },
+  {
+    title: "Specialised Commercial Claim",
+    desc: "Cyber incidents, directors’ and officers’ liability, contractors’ all risks, and other specialist covers.",
+    cta: "Start a Specialised Claim",
+    modal: "claim-specialised",
+    Icon: ShieldAlert,
+    tile: "from-slate-500 to-slate-700",
+    glow: "bg-slate-100",
+    hover:
+      "hover:border-slate-300 hover:shadow-[0_25px_50px_-20px_rgba(51,65,85,0.35)]",
+    btn: "group-hover:bg-slate-700",
+  },
 ];
 
 export default function ClaimsSection() {
@@ -59,12 +181,12 @@ export default function ClaimsSection() {
         </p>
       </div>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
+      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {claims.map(
           ({ title, desc, cta, modal, Icon, tile, glow, hover, btn }) => (
             <div
-              key={title}
-              className={`group relative overflow-hidden rounded-4xl border border-line bg-white p-8 shadow-[0_10px_40px_-20px_rgba(15,58,140,0.25)] transition duration-300 hover:-translate-y-1.5 ${hover}`}
+              key={modal}
+              className={`group relative flex flex-col overflow-hidden rounded-4xl border border-line bg-white p-8 shadow-[0_10px_40px_-20px_rgba(15,58,140,0.25)] transition duration-300 hover:-translate-y-1.5 ${hover}`}
             >
               <div
                 aria-hidden
@@ -88,7 +210,7 @@ export default function ClaimsSection() {
               <button
                 type="button"
                 onClick={() => openModal(modal)}
-                className={`relative mt-6 flex w-full items-center justify-between rounded-full bg-[#0a0f1e] py-2 pl-7 pr-2 text-[13px] font-semibold text-white transition ${btn}`}
+                className={`relative mt-auto flex w-full items-center justify-between rounded-full bg-[#0a0f1e] py-2 pl-7 pr-2 text-[13px] font-semibold text-white transition ${btn}`}
               >
                 {cta}
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-ink">

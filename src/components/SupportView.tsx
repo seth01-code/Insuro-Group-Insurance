@@ -10,6 +10,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import clsx from "clsx";
+import type { ModalType } from "@/lib/modals";
+import { getProduct, type ProductKey } from "@/lib/products";
 import {
   contact,
   tickets as seed,
@@ -25,6 +27,36 @@ const statusStyle: Record<TicketStatus, string> = {
   "In progress": "bg-brand-soft text-brand",
   Resolved: "bg-emerald-100 text-emerald-800",
 };
+
+// One claim shortcut per insurance product
+const claimDefs: { key: ProductKey; label: string; modal: ModalType }[] = [
+  { key: "health", label: "Health claim", modal: "claim-health" },
+  { key: "life", label: "Life claim", modal: "claim-life" },
+  { key: "motor", label: "Car claim", modal: "claim-car" },
+  { key: "electronics", label: "Device claim", modal: "claim-electronics" },
+  { key: "travel", label: "Travel claim", modal: "claim-travel" },
+  { key: "property", label: "Property claim", modal: "claim-property" },
+  { key: "business", label: "Business claim", modal: "claim-business" },
+  { key: "marine", label: "Marine claim", modal: "claim-marine" },
+  { key: "accident", label: "Accident claim", modal: "claim-accident" },
+  { key: "agriculture", label: "Agric claim", modal: "claim-agriculture" },
+  {
+    key: "specialised",
+    label: "Specialised claim",
+    modal: "claim-specialised",
+  },
+];
+
+const claimShortcuts = claimDefs.map(({ key, label, modal }) => ({
+  label,
+  modal,
+  Icon:
+    key === "motor"
+      ? CarFront
+      : key === "life"
+        ? HeartHandshake
+        : getProduct(key)!.Icon,
+}));
 
 // Title + description on the left, content on the right. No card.
 function Section({
@@ -144,7 +176,7 @@ export default function SupportView() {
         </div>
 
         {/* Claims shortcut */}
-        <div className="flex flex-wrap items-center justify-between gap-4 py-8">
+        <div className="py-8">
           <div className="max-w-md">
             <h2 className="text-[15px] font-bold text-ink">
               Need to file a claim?
@@ -153,21 +185,17 @@ export default function SupportView() {
               No login required to start. Average response time: 24 hours.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => openModal("claim-car")}
-              className="flex items-center gap-2 rounded-full border-2 border-red-200 px-5 py-2.5 text-[13px] font-semibold text-red-700 transition hover:bg-red-50"
-            >
-              <CarFront size={16} /> Car claim
-            </button>
-            <button
-              type="button"
-              onClick={() => openModal("claim-life")}
-              className="flex items-center gap-2 rounded-full border-2 border-emerald-200 px-5 py-2.5 text-[13px] font-semibold text-emerald-700 transition hover:bg-emerald-50"
-            >
-              <HeartHandshake size={16} /> Life claim
-            </button>
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            {claimShortcuts.map(({ label, modal, Icon }) => (
+              <button
+                key={modal}
+                type="button"
+                onClick={() => openModal(modal)}
+                className="flex items-center gap-2 rounded-full border-2 border-brand/20 px-4 py-2 text-[13px] font-semibold text-brand transition hover:bg-brand-soft"
+              >
+                <Icon size={16} /> {label}
+              </button>
+            ))}
           </div>
         </div>
 

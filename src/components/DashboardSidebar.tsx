@@ -14,15 +14,12 @@ import {
   FileText,
   HardHat,
   HeartHandshake,
-  HeartPulse,
   LayoutDashboard,
   LifeBuoy,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
   Settings,
-  Shapes,
-  ShieldCheck,
   Stethoscope,
   UserRoundCheck,
   Users,
@@ -32,6 +29,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import type { ModalType } from "@/lib/modals";
+import { getProduct, products, type ProductKey } from "@/lib/products";
 import { initialsFor } from "@/lib/auth";
 import { employees } from "@/lib/dashboard-data";
 import insuro from "@/assets/insuro.png";
@@ -53,6 +51,56 @@ type Entry = Leaf | Group;
 
 const isGroup = (e: Entry): e is Group => "items" in e;
 
+// Explore: one link per insurance product
+const exploreItems: Leaf[] = products.map((p) => ({
+  label: p.title,
+  Icon: p.Icon,
+  href: `/plans?type=${p.key}`,
+}));
+
+// Claims: one modal per insurance product
+const claimDefs: { key: ProductKey; label: string; modal: ModalType }[] = [
+  { key: "health", label: "Health Insurance Claim", modal: "claim-health" },
+  { key: "life", label: "Life Insurance Claim", modal: "claim-life" },
+  { key: "motor", label: "Car Insurance Claim", modal: "claim-car" },
+  {
+    key: "electronics",
+    label: "Device Insurance Claim",
+    modal: "claim-electronics",
+  },
+  { key: "travel", label: "Travel Insurance Claim", modal: "claim-travel" },
+  { key: "property", label: "Home & Property Claim", modal: "claim-property" },
+  { key: "business", label: "Business & SME Claim", modal: "claim-business" },
+  { key: "marine", label: "Marine & Transit Claim", modal: "claim-marine" },
+  {
+    key: "accident",
+    label: "Personal Accident Claim",
+    modal: "claim-accident",
+  },
+  {
+    key: "agriculture",
+    label: "Agricultural Claim",
+    modal: "claim-agriculture",
+  },
+  {
+    key: "specialised",
+    label: "Specialised Commercial Claim",
+    modal: "claim-specialised",
+  },
+];
+
+const claimItems: Leaf[] = claimDefs.map(({ key, label, modal }) => ({
+  label,
+  modal,
+  // Keep the original car and life icons; everything else uses the product icon
+  Icon:
+    key === "motor"
+      ? CarFront
+      : key === "life"
+        ? HeartHandshake
+        : getProduct(key)!.Icon,
+}));
+
 const nav: Entry[] = [
   { label: "Overview", Icon: LayoutDashboard, href: "/dashboard" },
   {
@@ -63,31 +111,8 @@ const nav: Entry[] = [
   },
   { label: "Active Plans", Icon: ClipboardList, href: "/dashboard/plans" },
   { label: "Payments", Icon: Wallet, href: "/dashboard/payments" },
-  {
-    label: "Explore",
-    Icon: Compass,
-    items: [
-      {
-        label: "Health Insurance",
-        Icon: HeartPulse,
-        href: "/plans?type=health",
-      },
-      { label: "Life Assurance", Icon: ShieldCheck, href: "/plans?type=life" },
-      { label: "General Insurance", Icon: Shapes, href: "/plans?type=general" },
-    ],
-  },
-  {
-    label: "Claims",
-    Icon: FileText,
-    items: [
-      { label: "Car Insurance Claim", Icon: CarFront, modal: "claim-car" },
-      {
-        label: "Life Insurance Claim",
-        Icon: HeartHandshake,
-        modal: "claim-life",
-      },
-    ],
-  },
+  { label: "Explore", Icon: Compass, items: exploreItems },
+  { label: "Claims", Icon: FileText, items: claimItems },
   {
     label: "Employee Services",
     Icon: Briefcase,

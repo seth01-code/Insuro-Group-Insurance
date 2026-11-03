@@ -6,21 +6,22 @@ import { useEffect, useState } from "react";
 import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import insuro from "@/assets/insuro.png";
+import { products } from "@/lib/products";
 
 const columns = [
   {
     title: "Explore",
-    links: [
-      { label: "Health Insurance", href: "/plans?type=health" },
-      { label: "Life Assurance", href: "/plans?type=life" },
-      { label: "General Insurance", href: "/plans?type=general" },
-    ],
+    links: products.map((p) => ({
+      label: p.title,
+      href: `/plans?type=${p.key}`,
+    })),
   },
   {
-    title: "Claims",
+    title: "Claims & Help",
     links: [
-      { label: "Car Insurance Claim", href: "/plans#claims" },
-      { label: "Life Insurance Claim", href: "/plans#claims" },
+      { label: "File a Claim", href: "/claims" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
@@ -28,7 +29,9 @@ const columns = [
     links: [
       { label: "Home", href: "/" },
       { label: "Insurance", href: "/plans" },
-      { label: "Dashboard", href: "/dashboard" },
+      { label: "Partners", href: "/providers" },
+      { label: "About", href: "/about" },
+      { label: "Contact", href: "/contact" },
     ],
   },
 ];
@@ -127,7 +130,8 @@ export default function Footer() {
               Stay in the loop
             </h3>
             <p className="mt-1 text-[13px] text-white/70">
-              Plan updates, new HMO partners, and renewal reminders. No spam.
+              Plan updates, new insurance partners, and renewal reminders. No
+              spam.
             </p>
           </div>
           <form
@@ -139,7 +143,7 @@ export default function Footer() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="hr@company.com"
+              placeholder="you@company.com"
               className="min-w-0 flex-1 bg-transparent px-4 text-[13px] text-ink outline-none placeholder:text-ink/40"
             />
             <button
@@ -168,8 +172,9 @@ export default function Footer() {
               />
             </Link>
             <p className="mt-5 max-w-xs text-[13px] leading-relaxed text-white/60 dark:text-[#0a0f1e]/60">
-              Compare plans from Nigeria&apos;s top HMOs and insurance
-              providers. Pre-negotiated rates, transparent pricing, zero hassle.
+              Discover, compare, buy and manage insurance from Nigeria&apos;s
+              top providers in one place. Pre-negotiated rates, transparent
+              pricing, zero hassle.
             </p>
 
             <ul className="mt-6 space-y-3">
@@ -214,7 +219,7 @@ export default function Footer() {
               <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/40 dark:text-[#0a0f1e]/45">
                 {col.title}
               </h4>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-5 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <Link
@@ -232,10 +237,11 @@ export default function Footer() {
 
         {/* Regulatory note */}
         <p className="mt-12 border-t border-white/10 pt-6 text-[11px] leading-relaxed text-white/40 dark:border-[#0a0f1e]/10 dark:text-[#0a0f1e]/50">
-          Insuro Africa Group Ltd (RC 1234567) is an insurance marketplace. All
-          plans are underwritten by NAICOM-licensed insurers and NHIA-accredited
-          HMOs. Plan prices shown are per staff, per month, and may vary by
-          group size and underwriting.
+          Insuro Africa Group Ltd (RC 1234567) is an insurance marketplace
+          licensed by the National Insurance Commission (NAICOM). All plans are
+          underwritten by NAICOM-licensed insurers and NHIA-accredited HMOs.
+          Prices shown are monthly premiums (per staff for group plans) and may
+          vary by group size and underwriting.
         </p>
 
         {/* Bottom bar */}

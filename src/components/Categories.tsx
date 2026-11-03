@@ -6,9 +6,17 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
+  Bandage,
+  Briefcase,
+  Car,
+  Home,
   HeartPulse,
+  Plane,
+  ShieldAlert,
   ShieldCheck,
-  ClipboardList,
+  Ship,
+  Smartphone,
+  Sprout,
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -17,7 +25,6 @@ const RESUME_AFTER_TOUCH_MS = 3000;
 
 const categories = [
   {
-    no: "01",
     title: "Health Insurance",
     desc: "Compare HMO plans for your employees. Filter by budget, coverage, and hospital network.",
     meta: "8 HMO Partners",
@@ -27,7 +34,6 @@ const categories = [
     Icon: HeartPulse,
   },
   {
-    no: "02",
     title: "Life Assurance",
     desc: "Group life and individual assurance plans. Protect your team and their families.",
     meta: "6 Providers",
@@ -37,14 +43,85 @@ const categories = [
     Icon: ShieldCheck,
   },
   {
-    no: "03",
-    title: "General Insurance",
-    desc: "Motor, property, travel, and business insurance — all in one place.",
-    meta: "Coming Soon",
-    href: "/plans?type=general",
-    image: "/images/cat-general.jpg",
+    title: "Motor Insurance",
+    desc: "Third-party, comprehensive, commercial vehicle, and fleet insurance.",
+    meta: "2 Providers",
+    href: "/plans?type=motor",
+    image: "/images/cat-motor.jpg",
     gradient: "linear-gradient(160deg, #e0e7ff 0%, #818cf8 100%)",
-    Icon: ClipboardList,
+    Icon: Car,
+  },
+  {
+    title: "Electronic Device Insurance",
+    desc: "Cover for phones, laptops, TVs, digital watches, POS machines, cameras, and projectors.",
+    meta: "2 Providers",
+    href: "/plans?type=electronics",
+    image: "/images/cat-electronics.jpg",
+    gradient: "linear-gradient(160deg, #cffafe 0%, #22d3ee 100%)",
+    Icon: Smartphone,
+  },
+  {
+    title: "Travel Insurance",
+    desc: "International, Schengen, business, and family travel cover.",
+    meta: "2 Providers",
+    href: "/plans?type=travel",
+    image: "/images/cat-travel.jpg",
+    gradient: "linear-gradient(160deg, #e0f2fe 0%, #7dd3fc 100%)",
+    Icon: Plane,
+  },
+  {
+    title: "Home & Property Insurance",
+    desc: "Homeowners’, household contents, fire and special perils, and commercial property cover.",
+    meta: "2 Providers",
+    href: "/plans?type=property",
+    image: "/images/cat-property.jpg",
+    gradient: "linear-gradient(160deg, #ede9fe 0%, #a78bfa 100%)",
+    Icon: Home,
+  },
+  {
+    title: "Business & SME Insurance",
+    desc: "Business packages, public liability, employers’ liability, professional indemnity, and equipment cover.",
+    meta: "2 Providers",
+    href: "/plans?type=business",
+    image: "/images/cat-business.jpg",
+    gradient: "linear-gradient(160deg, #dbeafe 0%, #93c5fd 100%)",
+    Icon: Briefcase,
+  },
+  {
+    title: "Marine & Goods-in-Transit",
+    desc: "Marine cargo, inland transit, and import/export cargo cover.",
+    meta: "2 Providers",
+    href: "/plans?type=marine",
+    image: "/images/cat-marine.jpg",
+    gradient: "linear-gradient(160deg, #cffafe 0%, #38bdf8 100%)",
+    Icon: Ship,
+  },
+  {
+    title: "Personal Accident Insurance",
+    desc: "Individual, family, and group accident cover.",
+    meta: "2 Providers",
+    href: "/plans?type=accident",
+    image: "/images/cat-accident.jpg",
+    gradient: "linear-gradient(160deg, #e0e7ff 0%, #6366f1 100%)",
+    Icon: Bandage,
+  },
+  {
+    title: "Agricultural Insurance",
+    desc: "Crop, livestock, and agricultural equipment cover.",
+    meta: "2 Providers",
+    href: "/plans?type=agriculture",
+    image: "/images/cat-agriculture.jpg",
+    gradient: "linear-gradient(160deg, #dcfce7 0%, #4ade80 100%)",
+    Icon: Sprout,
+  },
+  {
+    title: "Specialised Commercial",
+    desc: "Cyber, directors’ and officers’ liability, contractors’ all risks, and other specialist covers.",
+    meta: "2 Providers",
+    href: "/plans?type=specialised",
+    image: "/images/cat-specialised.jpg",
+    gradient: "linear-gradient(160deg, #e0e7ff 0%, #818cf8 100%)",
+    Icon: ShieldAlert,
   },
 ];
 
@@ -176,9 +253,9 @@ export default function Categories() {
             onScroll={handleScroll}
             className="-mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-6 scrollbar-none lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden"
           >
-            {categories.map((c) => (
+            {categories.map((c, i) => (
               <Link
-                key={c.no}
+                key={c.href}
                 href={c.href}
                 className="group w-[18rem] shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-[0_10px_40px_-15px_rgba(15,58,140,0.25)] transition hover:-translate-y-1 sm:w-[20rem]"
               >
@@ -188,7 +265,7 @@ export default function Categories() {
                   style={{ backgroundImage: `url(${c.image}), ${c.gradient}` }}
                 >
                   <span className="absolute left-4 top-3 text-sm font-semibold text-white/90">
-                    {c.no}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <c.Icon
                     size={56}
@@ -218,10 +295,10 @@ export default function Categories() {
           </div>
 
           {/* Dots */}
-          <div className="mt-1 flex items-center gap-2">
+          <div className="mt-1 flex flex-wrap items-center gap-2">
             {categories.map((c, i) => (
               <button
-                key={c.no}
+                key={c.href}
                 type="button"
                 onClick={() => goTo(i)}
                 aria-label={`Go to ${c.title}`}

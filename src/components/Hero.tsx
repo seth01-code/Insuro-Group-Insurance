@@ -59,7 +59,7 @@ export default function Hero() {
               className="h-120 bg-cover bg-center"
               style={{
                 backgroundImage:
-                  "url(/images/hero-family.jpg), linear-gradient(160deg, #dbeafe 0%, #93c5fd 100%)",
+                  "url(/images/insurance.jpg), linear-gradient(160deg, #dbeafe 0%, #93c5fd 100%)",
               }}
             />
             <div className="flex items-stretch bg-white">

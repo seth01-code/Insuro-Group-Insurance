@@ -6,10 +6,14 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
+  Building2,
   ChevronDown,
+  FileCheck2,
   House,
+  Info,
   LayoutDashboard,
   LogOut,
+  Mail,
   ShieldCheck,
   X,
   type LucideIcon,
@@ -26,13 +30,11 @@ type NavLink = { href: string; label: string; Icon: LucideIcon };
 const baseLinks: NavLink[] = [
   { href: "/", label: "Home", Icon: House },
   { href: "/plans", label: "Insurance", Icon: ShieldCheck },
+  { href: "/providers", label: "Partners", Icon: Building2 },
+  { href: "/claims", label: "Claims", Icon: FileCheck2 },
+  { href: "/about", label: "About", Icon: Info },
+  { href: "/contact", label: "Contact", Icon: Mail },
 ];
-const dashboardLink: NavLink = {
-  href: "/dashboard",
-  label: "Dashboard",
-  Icon: LayoutDashboard,
-};
-
 // Natural colors in light mode, white in dark mode (extra classes can force white elsewhere)
 function Logo({
   className,
@@ -155,7 +157,7 @@ export default function Navbar() {
   const closeDrawer = () => setOpenAt(null);
 
   const isHome = pathname === "/";
-  const links = user ? [...baseLinks, dashboardLink] : baseLinks;
+  const links = baseLinks;
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -194,7 +196,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-6 md:flex lg:gap-8">
             {links.map((l) => (
               <Link
                 key={l.href}
@@ -339,13 +341,18 @@ export default function Navbar() {
             <div className="mt-auto space-y-2.5 pt-6">
               {ready && user ? (
                 <>
-                  <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand via-brand to-brand-dark p-3 text-white">
+                  <Link
+                    href="/dashboard"
+                    onClick={closeDrawer}
+                    aria-label="Go to dashboard"
+                    className="group relative block overflow-hidden rounded-2xl bg-linear-to-br from-brand via-brand to-brand-dark p-3 text-white"
+                  >
                     <div className="animate-ring absolute -right-8 -top-10 h-28 w-28 rounded-full border border-white/20" />
                     <div className="relative flex items-center gap-2.5">
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/15 text-[11px] font-extrabold ring-1 ring-white/30">
                         {initialsFor(user.name)}
                       </span>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <div className="truncate text-[13px] font-bold">
                           {user.name}
                         </div>
@@ -353,8 +360,11 @@ export default function Navbar() {
                           {user.company}
                         </div>
                       </div>
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-brand transition group-hover:translate-x-0.5">
+                        <ArrowRight size={15} />
+                      </span>
                     </div>
-                  </div>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
